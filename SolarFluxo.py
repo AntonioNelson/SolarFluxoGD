@@ -4,30 +4,35 @@ import numpy_financial as npf
 import pandas as pd
 import plotly.graph_objects as go
 import io
+import os
 from openpyxl.styles import Font, PatternFill, Alignment
 
 st.set_page_config(page_title="Viabilidade Solar Avançada", layout="wide")
 
-# URLs dos Logotipos Hospedados no GitHub
-URL_LOGO_EMPROTEC = "https://githubusercontent.com"
-URL_LOGO_SISTEMA = "https://githubusercontent.com"
+# Nomes dos arquivos de imagem locais
+ARQUIVO_LOGO_EMPROTEC = "emprotec_logo.png"
+ARQUIVO_LOGO_SISTEMA = "sistema_logo.png"
 
 # --- TOPO DA PÁGINA PRINCIPAL: ALINHAMENTO DE LOGOMARCAS ---
-logo_col1, logo_col2, logo_col3 = st.columns([1, 2, 1])
+logo_col1, logo_col2, logo_col3 = st.columns([1, 2, 1])  # Proporção das colunas ajustada
 
 with logo_col1:
     # Logo do Sistema (Lado Esquerdo)
-    try: st.image(URL_LOGO_SISTEMA, width=150)
-    except: st.caption("🔺 [Logo Sistema]")
+    if os.path.exists(ARQUIVO_LOGO_SISTEMA):
+        st.image(ARQUIVO_LOGO_SISTEMA, width=150)
+    else:
+        st.caption("🔺 [sistema_logo.png não encontrado]")
 
 with logo_col2:
-    # Título Centralizado com o comando HTML corrigido
+    # Título Centralizado
     st.markdown("<h2 style='text-align: center; margin-top: 10px;'>Simulador Financeiro Fotovoltaico</h2>", unsafe_allow_html=True)
 
 with logo_col3:
     # Logo da EMPROTEC (Lado Direito)
-    try: st.image(URL_LOGO_EMPROTEC, width=150)
-    except: st.caption("🔺 [Logo EMPROTEC]")
+    if os.path.exists(ARQUIVO_LOGO_EMPROTEC):
+        st.image(ARQUIVO_LOGO_EMPROTEC, width=150)
+    else:
+        st.caption("🔺 [emprotec_logo.png não encontrado]")
 
 st.markdown("---")
 
@@ -69,7 +74,7 @@ with col2:
     st.subheader("📉 Tarifas, OPEX e Mercado")
     tarifa_inicial = st.number_input("Tarifa Média Atual (R\$/kWh)", value=0.77)
     reajuste_tarifa = st.number_input("Reajuste Anual da Tarifa (%)", value=4.5) / 100
-    tma = st.number_input("Taxa Mínima de Atratividade (TMA) (%)", value=14.5) / 100
+    tma = st.number_input("Taxa Mínima de Atatividade (TMA) (%)", value=14.5) / 100
     
     opex_anual_perc = st.number_input("Manutenção Geral Anual (% do Capex)", value=1.5) / 100
     seguro_anual = st.number_input("Seguro Anual do Sistema (R\$)", value=1500.0)
