@@ -10,7 +10,6 @@ st.set_page_config(page_title="Viabilidade Solar Avançada", layout="wide")
 
 # URLs dos Logotipos Hospedados no GitHub
 URL_LOGO_EMPROTEC = "https://githubusercontent.com"
-# Usando a mesma imagem como referência para o logotipo do sistema (lado esquerdo)
 URL_LOGO_SISTEMA = "https://githubusercontent.com"
 
 # --- TOPO DA PÁGINA PRINCIPAL: ALINHAMENTO DE LOGOMARCAS ---
@@ -22,8 +21,8 @@ with logo_col1:
     except: st.caption("🔺 [Logo Sistema]")
 
 with logo_col2:
-    # Título Centralizado
-    st.markdown("<h2 style='text-align: center; margin-top: 10px;'>Simulador Financeiro Fotovoltaico</h2>", unsafe_url_bridge=True)
+    # Título Centralizado com o comando HTML corrigido
+    st.markdown("<h2 style='text-align: center; margin-top: 10px;'>Simulador Financeiro Fotovoltaico</h2>", unsafe_allow_html=True)
 
 with logo_col3:
     # Logo da EMPROTEC (Lado Direito)
@@ -60,9 +59,8 @@ with col1:
     custo_kit = st.number_input("Custo do KIT Fotovoltaico (R\$)", value=109395.17, step=1000.0)
     custo_instalacao_mao_obra = st.number_input("Custo da Instalação / Engenharia (R\$)", value=65000.0, step=1000.0)
     
-    # Capex calculado e exibido conforme a estrutura solicitada
     soma_padrao_capex = custo_kit + custo_instalacao_mao_obra
-    custo_instalacao_total = st.number_input("Custo Total Installed (Capex) (R\$)", value=soma_padrao_capex, step=1000.0)
+    custo_instalacao_total = st.number_input("Custo Total Instalado (Capex) (R\$)", value=soma_padrao_capex, step=1000.0)
     
     geracao_anual_inicial = st.number_input("Geração Anual Inicial (kWh)", value=106800.0)
     degradacao_painel = st.number_input("Degradação Anual dos Painéis (%)", value=0.5) / 100
@@ -71,7 +69,7 @@ with col2:
     st.subheader("📉 Tarifas, OPEX e Mercado")
     tarifa_inicial = st.number_input("Tarifa Média Atual (R\$/kWh)", value=0.77)
     reajuste_tarifa = st.number_input("Reajuste Anual da Tarifa (%)", value=4.5) / 100
-    tma = st.number_input("Taxa Mínima de Atatividade (TMA) (%)", value=14.5) / 100
+    tma = st.number_input("Taxa Mínima de Atratividade (TMA) (%)", value=14.5) / 100
     
     opex_anual_perc = st.number_input("Manutenção Geral Anual (% do Capex)", value=1.5) / 100
     seguro_anual = st.number_input("Seguro Anual do Sistema (R\$)", value=1500.0)
@@ -152,7 +150,7 @@ if modelo_comercial == "Aluguel da Central para Terceiros":
         st.metric("Payback do Investidor", payback_dono)
     with c_clie:
         st.subheader("👤 Para o Contratante (Cliente/Assinante)")
-        st.metric("Economia Líquida no Ano 1", f"R\$ {ganho_contratante_lista[1]:,.2f}")
+        st.metric("Economia Líquida no Ano 1", f"R\$ {ganho_contratante_lista:,.2f}")
         st.metric("Economia Acumulada Total", f"R\$ {np.sum(ganho_contratante_lista):,.2f}")
 else:
     m1, m2, m3 = st.columns(3)
@@ -178,7 +176,7 @@ df_fluxo = pd.DataFrame({
 })
 st.dataframe(df_fluxo.style.format({"Fluxo Liquido Investidor (R$)": "R\$ {:,.2f}", "Saldo Acumulado Investidor (R$)": "R\$ {:,.2f}", "Economia Liquida Contratante (R$)": "R\$ {:,.2f}"}), use_container_width=True)
 
-# --- BOTÃO DE EXPORTAÇÃO EXCEL ATIVADO ---
+# --- BOTÃO DE EXPORTAÇÃO EXCEL ---
 buffer = io.BytesIO()
 with pd.ExcelWriter(buffer, engine='openpyxl') as writer:
     df_fluxo.to_excel(writer, index=False, sheet_name='Simulação Solar', startrow=4)
@@ -206,7 +204,6 @@ with pd.ExcelWriter(buffer, engine='openpyxl') as writer:
 
 buffer.seek(0)
 
-# Botão posicionado estrategicamente fora de blocos lógicos condicionados
 st.markdown("### 💾 Salvar Relatório Executivo")
 st.download_button(
     label="📥 Baixar Fluxo de Caixa Completo para Excel", 
