@@ -27,12 +27,12 @@ with logo_col2:
     # Título Centralizado
     st.markdown("<h2 style='text-align: center; margin-top: 10px;'>Simulador Financeiro Fotovoltaico</h2>", unsafe_allow_html=True)
 
-with logo_col3:
-    # Logo da EMPROTEC (Lado Direito)
-    if os.path.exists(ARQUIVO_LOGO_EMPROTEC):
-        st.image(ARQUIVO_LOGO_EMPROTEC, width=150)
-    else:
-        st.caption("🔺 [emprotec_logo.png não encontrado]")
+#with logo_col3:
+    ## Logo da EMPROTEC (Lado Direito)
+    #if os.path.exists(ARQUIVO_LOGO_EMPROTEC):
+        #st.image(ARQUIVO_LOGO_EMPROTEC, width=150)
+    #else:
+        #st.caption("🔺 [emprotec_logo.png não encontrado]")
 
 st.markdown("---")
 
